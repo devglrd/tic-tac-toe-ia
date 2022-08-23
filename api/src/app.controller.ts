@@ -5,6 +5,10 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get()
+  async live() {
+    return { live: true };
+  }
   @Post('play')
   async play(@Body() body: { humanScore: number[]; iaScore: number[] }) {
     const posibility = [0, 1, 2, 3, 4, 5, 6, 7, 8];
