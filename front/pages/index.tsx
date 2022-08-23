@@ -25,7 +25,7 @@ const Home: NextPage = () => {
 
     async function playBot(score: any) {
 
-        const play = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/play', {
+        const play = await axios.post(process.env.API_URL + '/play', {
             humanScore: score,
             iaScore
         });
