@@ -25,7 +25,7 @@ const Home: NextPage = () => {
 
     async function playBot(score: any) {
 
-        const play = await axios.post(process.env.API_URL + '/play', {
+        const play = await axios.post('https://tic-tac-toe-ia-api.vercel.app/api/play', {
             humanScore: score,
             iaScore
         });
