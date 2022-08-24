@@ -29,6 +29,10 @@ const Home: NextPage = () => {
             setWinner('X');
             return false;
         }
+        if (await isDraw()) {
+            setWinner('Draw');
+            return false;
+        }
         await playBot(humanScoreTemp)
     }
 
@@ -43,6 +47,10 @@ const Home: NextPage = () => {
             }
         }
         return false
+    }
+
+    async function isDraw() {
+        return cell.every(cell => cell !== null);
     }
 
     async function playBot(score: any) {
@@ -61,6 +69,10 @@ const Home: NextPage = () => {
         await setIsX(true)
         if (await isWinning(magicIaTemp)) {
             setWinner('0');
+            return false;
+        }
+        if (await isDraw()) {
+            setWinner('Draw');
             return false;
         }
     }
