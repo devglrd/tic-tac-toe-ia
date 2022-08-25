@@ -6,10 +6,8 @@ export declare class AppController {
     live(): Promise<{
         live: boolean;
     }>;
-    play({ index, cell, humanScore, }: {
-        index: number;
+    play({ cell }: {
         cell: any;
-        humanScore: number[];
     }): Promise<{
         status: string;
         choice: number;

@@ -23,9 +23,8 @@ let AppController = class AppController {
     async live() {
         return { live: true };
     }
-    async play({ index, cell, humanScore, }) {
+    async play({ cell }) {
         const choice = await this.appService.getBestMove(cell);
-        console.log(choice, '--');
         return {
             status: 'continue',
             choice: choice,

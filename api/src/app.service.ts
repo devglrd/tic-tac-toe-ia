@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
   private magicBoard = [2, 7, 6, 9, 5, 1, 4, 3, 8];
-  private humanScore = 'X';
+  private human = 'X';
   private ia = '0';
   private scoreAi = [];
   private scoreHuman = [];
@@ -18,13 +18,23 @@ export class AppService {
     [2, 4, 6],
   ];
 
+  async checkWinner(cell: any[]) {
+    for (let i = 0; i < this.winCombos.length; i++) {
+      const [a, b, c] = this.winCombos[i];
+      if (cell[a] && cell[a] === cell[b] && cell[a] === cell[c]) {
+        return cell[a] === this.ia ? 1 : -1;
+      }
+    }
+    return null;
+  }
+
   async getBestMove(cell: any[]) {
     let bestScore = -Infinity;
     let bestMove = -1;
     for (let i = 0; i < 9; i++) {
       if (cell[i] === null) {
         cell[i] = this.ia;
-        const score = this.minimax(cell, 0, false);
+        const score = await this.minimax(cell, false);
         cell[i] = null;
         if (score > bestScore) {
           bestScore = score;
@@ -35,7 +45,22 @@ export class AppService {
     return bestMove;
   }
 
-  private minimax(cell: any[], number: number, b: boolean) {
-    return 1;
+  async minimax(cell: any[], isMaximizing: boolean) {
+    let bestScore = -Infinity;
+    let score = await this.checkWinner(cell);
+    if (score !== null) {
+      return score;
+    }
+    for (let i = 0; i < 9; i++) {
+      if (cell[i] === null) {
+        cell[i] = isMaximizing ? this.ia : this.human;
+        score = await this.minimax(cell, !isMaximizing);
+        cell[i] = null;
+        if (score > bestScore) {
+          bestScore = score;
+        }
+      }
+    }
+    return bestScore;
   }
 }

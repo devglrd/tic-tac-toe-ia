@@ -11,7 +11,7 @@ const common_1 = require("@nestjs/common");
 let AppService = class AppService {
     constructor() {
         this.magicBoard = [2, 7, 6, 9, 5, 1, 4, 3, 8];
-        this.humanScore = 'X';
+        this.human = 'X';
         this.ia = '0';
         this.scoreAi = [];
         this.scoreHuman = [];
@@ -26,13 +26,22 @@ let AppService = class AppService {
             [2, 4, 6],
         ];
     }
+    async checkWinner(cell) {
+        for (let i = 0; i < this.winCombos.length; i++) {
+            const [a, b, c] = this.winCombos[i];
+            if (cell[a] && cell[a] === cell[b] && cell[a] === cell[c]) {
+                return cell[a] === this.ia ? 1 : -1;
+            }
+        }
+        return null;
+    }
     async getBestMove(cell) {
         let bestScore = -Infinity;
         let bestMove = -1;
         for (let i = 0; i < 9; i++) {
             if (cell[i] === null) {
                 cell[i] = this.ia;
-                const score = this.minimax(cell, 0, false);
+                const score = await this.minimax(cell, false);
                 cell[i] = null;
                 if (score > bestScore) {
                     bestScore = score;
@@ -42,8 +51,23 @@ let AppService = class AppService {
         }
         return bestMove;
     }
-    minimax(cell, number, b) {
-        return 1;
+    async minimax(cell, isMaximizing) {
+        let bestScore = -Infinity;
+        let score = await this.checkWinner(cell);
+        if (score !== null) {
+            return score;
+        }
+        for (let i = 0; i < 9; i++) {
+            if (cell[i] === null) {
+                cell[i] = isMaximizing ? this.ia : this.human;
+                score = await this.minimax(cell, !isMaximizing);
+                cell[i] = null;
+                if (score > bestScore) {
+                    bestScore = score;
+                }
+            }
+        }
+        return bestScore;
     }
 };
 AppService = __decorate([
