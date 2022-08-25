@@ -9,8 +9,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppService = void 0;
 const common_1 = require("@nestjs/common");
 let AppService = class AppService {
-    getHello() {
-        return 'Hello World!';
+    constructor() {
+        this.magicBoard = [2, 7, 6, 9, 5, 1, 4, 3, 8];
+        this.humanScore = 'X';
+        this.ia = '0';
+        this.scoreAi = [];
+        this.scoreHuman = [];
+        this.winCombos = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+    }
+    async getBestMove(cell) {
+        let bestScore = -Infinity;
+        let bestMove = -1;
+        for (let i = 0; i < 9; i++) {
+            if (cell[i] === null) {
+                cell[i] = this.ia;
+                const score = this.minimax(cell, 0, false);
+                cell[i] = null;
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = i;
+                }
+            }
+        }
+        return bestMove;
+    }
+    minimax(cell, number, b) {
+        return 1;
     }
 };
 AppService = __decorate([

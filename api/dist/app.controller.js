@@ -18,20 +18,18 @@ const app_service_1 = require("./app.service");
 let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
+        this.magicBoard = [2, 7, 6, 9, 5, 1, 4, 3, 8];
     }
     async live() {
         return { live: true };
     }
-    async play(body) {
-        const posibility = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        const array = posibility
-            .filter((e) => {
-            return !body.humanScore.includes(e);
-        })
-            .filter((e) => {
-            return !body.iaScore.includes(e);
-        });
-        return array[Math.floor(Math.random() * array.length)];
+    async play({ index, cell, humanScore, }) {
+        const choice = await this.appService.getBestMove(cell);
+        console.log(choice, '--');
+        return {
+            status: 'continue',
+            choice: choice,
+        };
     }
 };
 __decorate([

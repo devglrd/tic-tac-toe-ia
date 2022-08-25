@@ -3,22 +3,24 @@ import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
+  private magicBoard = [2, 7, 6, 9, 5, 1, 4, 3, 8];
+
   constructor(private readonly appService: AppService) {}
 
   @Get()
   async live() {
     return { live: true };
   }
+
   @Post('play')
-  async play(@Body() body: { humanScore: number[]; iaScore: number[] }) {
-    const posibility = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-    const array = posibility
-      .filter((e) => {
-        return !body.humanScore.includes(e);
-      })
-      .filter((e) => {
-        return !body.iaScore.includes(e);
-      });
-    return array[Math.floor(Math.random() * array.length)];
+  async play(
+    @Body()
+    { cell }: { cell: any },
+  ) {
+    const choice = await this.appService.getBestMove(cell);
+    return {
+      status: 'continue',
+      choice: choice,
+    };
   }
 }
