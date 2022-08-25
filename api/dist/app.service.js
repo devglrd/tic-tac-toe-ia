@@ -10,11 +10,8 @@ exports.AppService = void 0;
 const common_1 = require("@nestjs/common");
 let AppService = class AppService {
     constructor() {
-        this.magicBoard = [2, 7, 6, 9, 5, 1, 4, 3, 8];
         this.human = 'X';
         this.ia = '0';
-        this.scoreAi = [];
-        this.scoreHuman = [];
         this.winCombos = [
             [0, 1, 2],
             [3, 4, 5],

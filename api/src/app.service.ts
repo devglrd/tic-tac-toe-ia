@@ -2,11 +2,8 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  private magicBoard = [2, 7, 6, 9, 5, 1, 4, 3, 8];
   private human = 'X';
   private ia = '0';
-  private scoreAi = [];
-  private scoreHuman = [];
   private winCombos = [
     [0, 1, 2],
     [3, 4, 5],
